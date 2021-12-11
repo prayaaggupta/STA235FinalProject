@@ -11,6 +11,7 @@ rm(list = ls())
 cat("\014")
 
 library(tidyverse)
+library(naniar)
 
 # Before doing anything, load your data and select the sample we will use
 setwd("/Users/benmathew/Desktop/Personal/UT_CSB/S3/STA235H/STA235FinalProject")
@@ -23,7 +24,8 @@ d_total <- read.csv("TravisCountyData.csv")  %>%
             co.applicant_ethnicity.2, co.applicant_ethnicity.3,
             co.applicant_ethnicity.4, co.applicant_ethnicity.5, 
             applicant_race.2, applicant_race.3, applicant_race.4,
-            applicant_race.5))
+            applicant_race.5, co.applicant_race.2, co.applicant_race.3,
+            co.applicant_race.4, co.applicant_race.5))
 
 # These are the row numbers you will need (everyone will use the same observations)
 rows <- read.csv("https://raw.githubusercontent.com/maibennett/sta235/main/exampleSite/content/Assignments/Project/data/row_sample.csv") %>%
@@ -32,7 +34,11 @@ rows <- read.csv("https://raw.githubusercontent.com/maibennett/sta235/main/examp
 d <- d_total %>% slice(rows)
 
 # Now clean your data and conduct your analysis with the d dataset.
-for(i in 1:ncol(d_total)){
-  d_total[is.na(d_total[,i]), i] <- mean(d_total[,i], na.rm = TRUE)
-}
-warnings()
+d <- d %>% replace_with_na_all(condition = ~.x == "Exempt")
+d <- as.double(d$rate_spread)
+
+# below this line is not working as expected
+# df <- as.data.frame(t(d))
+# df$rate_spread[is.na(df$rate_spread)]<-mean(df$rate_spread,na.rm=TRUE)
+d[rate_spread[is.na(d[rate_spread])]<-mean(d[rate_spread],na.rm=TRUE)
+d$rate_spread
