@@ -14,6 +14,13 @@ library(tidyverse)
 library(naniar)
 
 # Before doing anything, load your data and select the sample we will use
+data <- read.csv("TravisCountyData.csv")
+na_count <-sapply(data, function(y) sum(length(which(is.na(y)))))
+na_count <- data.frame(na_count)
+na_count
+
+
+
 d_total <- read.csv("TravisCountyData.csv")  %>% 
   select(-c(activity_year, lei, derived_msa.md, state_code, county_code,
             census_tract, prepayment_penalty_term, intro_rate_period,
