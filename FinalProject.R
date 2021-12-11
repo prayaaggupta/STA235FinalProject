@@ -14,12 +14,15 @@ library(tidyverse)
 library(naniar)
 
 # Before doing anything, load your data and select the sample we will use
-data <- read.csv("TravisCountyData.csv")
-na_count <-sapply(data, function(y) sum(length(which(is.na(y)))))
+d_total <- read.csv("TravisCountyData.csv")
+# These are the row numbers you will need (everyone will use the same observations)
+rows <- read.csv("https://raw.githubusercontent.com/maibennett/sta235/main/exampleSite/content/Assignments/Project/data/row_sample.csv") %>%
+  pull() # Load it as a vector and not a dataframe.
+
+d <- d_total %>% slice(rows)
+na_count <-sapply(d, function(y) sum(length(which(is.na(y)))))
 na_count <- data.frame(na_count)
 na_count
-
-
 
 d_total <- read.csv("TravisCountyData.csv")  %>% 
   select(-c(activity_year, lei, derived_msa.md, state_code, county_code,
@@ -48,3 +51,10 @@ d$rate_spread <- as.double(d$rate_spread)
 # df$rate_spread[is.na(df$rate_spread)]<-mean(df$rate_spread,na.rm=TRUE)
 d[rate_spread[is.na(d[rate_spread])]<-mean(d[rate_spread],na.rm=TRUE)
 d$rate_spread
+
+d$rate_spread <- as.double(d$rate_spread)
+d$rate_spread <- as.double(d$total_loan_costs)
+d$rate_spread <- as.double(d$origination_charges)
+d$rate_spread <- as.double(d$discount_points)
+d$rate_spread <- as.double(d$lender_credits)
+d$rate_spread <- as.double(d$income)
