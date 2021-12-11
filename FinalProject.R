@@ -20,9 +20,9 @@ rows <- read.csv("https://raw.githubusercontent.com/maibennett/sta235/main/examp
   pull() # Load it as a vector and not a dataframe.
 
 d <- d_total %>% slice(rows)
-na_count <-sapply(d, function(y) sum(length(which(is.na(y)))))
-na_count <- data.frame(na_count)
-na_count
+
+#remove columns that have more than 30% NA values
+d = d[,!sapply(d, function(x) mean(is.na(x)))>0.3]
 
 d_total <- read.csv("TravisCountyData.csv")  %>% 
   select(-c(activity_year, lei, derived_msa.md, state_code, county_code,
