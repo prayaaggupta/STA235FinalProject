@@ -14,7 +14,6 @@ library(tidyverse)
 library(naniar)
 
 # Before doing anything, load your data and select the sample we will use
-setwd("/Users/benmathew/Desktop/Personal/UT_CSB/S3/STA235H/STA235FinalProject")
 d_total <- read.csv("TravisCountyData.csv")  %>% 
   select(-c(activity_year, lei, derived_msa.md, state_code, county_code,
             census_tract, prepayment_penalty_term, intro_rate_period,
@@ -35,7 +34,7 @@ d <- d_total %>% slice(rows)
 
 # Now clean your data and conduct your analysis with the d dataset.
 d <- d %>% replace_with_na_all(condition = ~.x == "Exempt")
-d <- as.double(d$rate_spread)
+d$rate_spread <- as.double(d$rate_spread)
 
 # below this line is not working as expected
 # df <- as.data.frame(t(d))
